@@ -6,7 +6,7 @@ class Service(
     val durationInMinutes: Int,
     val price: Double? = 0
 ){
-    // validaciones previas al inicializar un service
+    // Precondition validations when creating a Service
     init {
         requiere(name.isNotBlank()) { "Service name must not be blank" }
         requiere(durationInMinutes > 0) { "Service duration must be greater than zero" }
