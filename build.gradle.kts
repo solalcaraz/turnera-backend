@@ -1,3 +1,5 @@
+import org.gradle.testing.jacoco.tasks.JacocoReport
+
 plugins {
     kotlin("jvm") version "2.2.20"
     jacoco
@@ -25,8 +27,10 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-// Configuramos jacocoTestReport usando Kotlin DSL correctamente
-tasks.register<JacocoReport>("jacocoTestReport") {
+/**
+ * Configuramos el task que YA crea el plugin jacoco
+ */
+tasks.named<JacocoReport>("jacocoTestReport") {
     dependsOn(tasks.test)
 
     reports {
@@ -35,21 +39,13 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         html.required.set(true)
         html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
     }
-
-    // Excluir paquetes que no queremos cubrir (opcional)
-    classDirectories.setFrom(
-        files(classDirectories.files.map {
-            fileTree(it) {
-                exclude("**/config/**", "**/entity/**", "**/Application*.*")
-            }
-        })
-    )
-    executionData.setFrom(fileTree(buildDir).include("/jacoco/test.exec"))
 }
 
-// Task personalizado para GitHub Actions
+/**
+ * Task que usa GitHub Actions
+ */
 tasks.register("runOnGitHub") {
     dependsOn("jacocoTestReport")
     group = "custom"
-    description = "$ ./gradlew runOnGitHub # runs on GitHub Action"
+    description = "Runs tests with coverage for GitHub Actions"
 }
