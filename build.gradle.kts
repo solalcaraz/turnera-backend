@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.2.20"
+    jacoco
 }
 
 group = "com.sol.turnera.backend"
@@ -16,14 +17,37 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 kotlin {
     jvmToolchain(21)
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+// Configuramos jacocoTestReport usando Kotlin DSL correctamente
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(true)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+
+    // Excluir paquetes que no queremos cubrir (opcional)
+    classDirectories.setFrom(
+        files(classDirectories.files.map {
+            fileTree(it) {
+                exclude("**/config/**", "**/entity/**", "**/Application*.*")
+            }
+        })
+    )
+    executionData.setFrom(fileTree(buildDir).include("/jacoco/test.exec"))
+}
+
+// Task personalizado para GitHub Actions
 tasks.register("runOnGitHub") {
     dependsOn("jacocoTestReport")
     group = "custom"
