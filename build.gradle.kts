@@ -23,3 +23,9 @@ tasks.withType<Test> {
 kotlin {
     jvmToolchain(21)
 }
+
+tasks.register("runOnGitHub") {
+    dependsOn("jacocoTestReport")
+    group = "custom"
+    description = "$ ./gradlew runOnGitHub # runs on GitHub Action"
+}
