@@ -3,6 +3,9 @@
 # => https://docs.github.com/en/actions
 name: build
 
+permissions:
+  contents: write
+
 # "on" controla cuando se ejecuta la action. En este caso, dispara el workflow
 # ante un evento de "push" o de "pull request", pero solo cuando ocurra
 # en las ramas de nombre "main" o "master". Un PR a "develop", o un commit
