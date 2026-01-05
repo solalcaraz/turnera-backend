@@ -5,7 +5,7 @@ import io.kotest.matchers.shouldBe
 
 class PatientTest : DescribeSpec({
 
-    describe("Precondition validations when creating a Patient") {
+    describe("Tests 0 - Precondition validations when creating a Patient") {
 
         it("should not allow creating a patient with blank first name") {
             val exception = shouldThrow<IllegalArgumentException> {
