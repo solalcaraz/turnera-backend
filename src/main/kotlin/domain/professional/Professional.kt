@@ -9,7 +9,7 @@ class Professional(
     val professionalType: ProfessionalType,
     val services: Set<Service>,
     val agendas: Set<Agenda>,
-    val imagenUrl: String? = null,
+    val imageUrl: String? = null,
     val contactLinks: Set<ContactLink> = emptySet()
 ){
     init {
