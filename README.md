@@ -26,3 +26,7 @@ This release includes the first version of the domain model for the appointment 
 - Agenda modalities (virtual, in-person, group/individual).
 - Blocked time slots, buffer times, and cancellation policies.
 - Enforcement of service-specific restrictions.
+
+-------------------
+## Tags
+- entrega-0-back → Initial domain model implementation
