@@ -9,6 +9,6 @@ sealed class AgendaExceptions(message: String): Exception(message) {
 sealed class AppointmentExceptions(message: String): Exception(message) {
     class StartDateInPast(): AppointmentExceptions("Appointment start date must be in the present or future")
     class BlankPatientNote(): AppointmentExceptions("Patient note must not be blank if provided")
-    class CannotConfirmNonReservedAppointment(): AppointmentExceptions("Only reserved appointments can be confirmed")
-    class AppointmentAlreadyCancelled(): AppointmentExceptions("Appointment is already canceled")
+    class CannotConfirm(): AppointmentExceptions("Only reserved appointments can be confirmed")
+    class AppointmentAlreadyCancelled(): AppointmentExceptions("Appointment is already cancelled")
 }
