@@ -15,24 +15,22 @@ class Appointment(
     var status: AppointmentStatus = AppointmentStatus.RESERVED
 
     init {
-        require(startDate.isAfter(LocalDate.now()) || startDate.isEqual(LocalDate.now())) {
-            AppointmentExceptions.StartDateInPast()
-        }
+        if(startDate.isBefore(LocalDate.now())) { throw AppointmentExceptions.StartDateInPast() }
 
         patientNote?.let {
-            require(it.isNotBlank()) { AppointmentExceptions.BlankPatientNote() }
+            if(it.isBlank()) { throw AppointmentExceptions.BlankPatientNote() }
         }
     }
 
     fun endTime(): LocalTime = startTime.plusMinutes(service.durationInMinutes.toLong())
 
     fun confirm() {
-        require(status == AppointmentStatus.RESERVED) { AppointmentExceptions.CannotConfirmNonReservedAppointment() }
+        if(status != AppointmentStatus.RESERVED) { throw AppointmentExceptions.CannotConfirm() }
         status = AppointmentStatus.CONFIRMED
     }
 
     fun cancel() {
-        require(status != AppointmentStatus.CANCELLED) { AppointmentExceptions.AppointmentAlreadyCancelled() }
+        if(status == AppointmentStatus.CANCELLED) { throw AppointmentExceptions.AppointmentAlreadyCancelled() }
         status = AppointmentStatus.CANCELLED
     }
 }
